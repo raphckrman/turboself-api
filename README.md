@@ -21,3 +21,6 @@ async function main() {
 
 main()
 ```
+
+### Autre exemples
+Pour voir d'autre exemples d'utilisation, vous pouvez regarder le dossier ``examples`` 
