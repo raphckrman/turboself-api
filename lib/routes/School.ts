@@ -10,9 +10,10 @@ export class School {
     this.#manager = new RESTManager();
   }
 
-  /** This method is used to get the user school informations.
+  /** This method is used to get the user school information.
      * @param hoteId The ID of the hote.
-     */
+     * @param token The token of the user.
+   */
   async getUserSchool(hoteId: number, token: string): Promise<SchoolResponse> {
     return this.#manager.makeAuthRequest<userResponse>({
       method: "GET",

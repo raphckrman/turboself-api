@@ -85,7 +85,7 @@ export class User {
      * @param hoteId The ID of the hote to get.
      * @param token The token of the user.
      */
-  async getSolds(hoteId: number, token: string): Promise<balanceResponse[]> {
+  async getBalances(hoteId: number, token: string): Promise<balanceResponse[]> {
     return this.#manager.makeAuthRequest<balanceResponse[]>({
       method: "GET",
       url: endpoints.USER_BALANCES(hoteId),
@@ -187,7 +187,7 @@ export class User {
      * @param hoteId The ID of the hote to get.
      * @param token The token of the user.
      * @param state The state of the booking (1==true, 0==false).
-     * @param weekId The week number to get.
+     * @param weekNumber The week number to get.
      * @param dayOfWeek The ID of the borne to get.
      * @param bookEvening If the evening should be booked.
      */

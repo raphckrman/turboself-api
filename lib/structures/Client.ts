@@ -82,7 +82,7 @@ export class Turboself {
     return this.#user.getLastPayment(this.hoteId, this.token);
   }
 
-  public async getSolds() {
+  public async getBalances() {
     if (await this.isExpire()) {
       if (this.mail && this.password) {
         await this.refreshToken();
@@ -92,7 +92,7 @@ export class Turboself {
       }
     }
 
-    return this.#user.getSolds(this.hoteId, this.token);
+    return this.#user.getBalances(this.hoteId, this.token);
   }
 
   public async getUserSchool() {
