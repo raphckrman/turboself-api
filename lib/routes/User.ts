@@ -136,7 +136,7 @@ export class User {
      * @param token The token of the user.
      * @param week The week number to get.
      */
-  async getBookings(hoteId: number, token: string, week?: number): Promise<bookings[]> {
+  async getBookings(hoteId: number, token: string, week?: number): Promise<bookingResponse> {
     return this.#manager.makeAuthRequest<bookingResponse>({
       method: "GET",
       url: endpoints.BOOKINGS(hoteId) + (week ? `?num=${week}` : ""),
@@ -144,8 +144,7 @@ export class User {
         "Authorization": "Bearer " + token
       }
     }).then((data: unknown) => {
-      let typedData = data as bookingResponse;
-      return typedData.rsvWebDto;
+      return data as bookingResponse;
     });
   }
 
@@ -192,7 +191,7 @@ export class User {
      * @param bookEvening If the evening should be booked.
      */
   async bookDay(hoteId: number, token: string, state: number, weekNumber?: number, dayOfWeek?: number, bookEvening?: boolean ): Promise<bookMealResponse> {
-    const weekId: string =  await this.getBookings(hoteId, token, weekNumber).then((data) => data[0]?.id) ?? await this.getBookings(hoteId, token).then((data) => data[0]?.id);
+    const weekId: string =  await this.getBookings(hoteId, token, weekNumber).then((data) => data.rsvWebDto[0]?.id) ?? await this.getBookings(hoteId, token).then((data) => data.rsvWebDto[0]?.id);
     return this.#manager.makeAuthRequest<bookMealResponse>({
       method: "PUT",
       url: endpoints.BOOK_DAY(hoteId),
@@ -210,6 +209,24 @@ export class User {
     }).then((data: unknown) => {
       let typedData = data as bookMealResponse;
       return typedData;
+    });
+  }
+
+  /** This method is used to get the week for a weekNumber.
+   * @param hoteId The ID of the hote to get.
+   * @param week The week number to get.
+   * @param token The token of the user.
+   */
+  async getBookingWeek(hoteId: number, week: number, token: string): Promise<string> {
+    return this.#manager.makeAuthRequest<bookingResponse>({
+      method: "GET",
+      url: endpoints.BOOKINGS(hoteId) + (week ? `?num=${week}` : ""),
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }).then((data: unknown) => {
+      let typedData = data as bookingResponse;
+      return typedData.dateSemaine;
     });
   }
 }
