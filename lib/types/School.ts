@@ -96,3 +96,12 @@ export interface SchoolClosure {
   au: string
   synchro: unknown | null
 }
+
+export interface SchoolSearchResponse {
+  /** School Configuration ID */
+  code2p5: number,
+  /** School Name */
+  nom: string,
+  /** Turboself version used by the School */
+  versionTS: string
+}

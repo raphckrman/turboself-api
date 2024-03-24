@@ -12,3 +12,5 @@ export const BOOKINGS = (hoteId: number) => `/api/v1/reservations/hotes/${hoteId
 export const BOOK_DAY = (hoteId: number) => `/api/v2/hotes/${hoteId}/reservations-jours`;
 
 export const EVENING = (hoteId: number) => `/api/v1/hotes/${hoteId}/resa-soir`;
+
+export const SEARCHSCHOOL = (q: string, limit: number) => `/api/v1/etablissements?q=${q}&limit=${limit}`;

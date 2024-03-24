@@ -1,6 +1,6 @@
 import { RESTManager } from "../rest/RESTManager";
 import * as endpoints from "../rest/endpoints";
-import { SchoolResponse } from "../types/School";
+import { SchoolResponse, SchoolSearchResponse } from "../types/School";
 import { userResponse } from "../types/User";
 
 export class School {
@@ -36,6 +36,20 @@ export class School {
       url: endpoints.SCHOOL(etabId)
     }).then((data: unknown) => {
       let typedData = data as SchoolResponse;
+      return typedData;
+    });
+  }
+
+  /** This method is used to search for a etab. 
+   * @param q Name of the school.
+   * @param limit Number of results.
+  */
+  async seachSchool(q: string, limit: number): Promise<SchoolSearchResponse> {
+    return this.#manager.makeAuthRequest<SchoolSearchResponse>({
+      method: "GET",
+      url: endpoints.SEARCHSCHOOL(q, limit)
+    }).then((data: unknown) => {
+      let typedData = data as SchoolSearchResponse;
       return typedData;
     });
   }
