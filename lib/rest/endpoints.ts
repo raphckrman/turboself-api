@@ -10,3 +10,5 @@ export const SCHOOL = (etabId: number) => `/api/v1/etablissements/etabId/${etabI
 
 export const BOOKINGS = (hoteId: number) => `/api/v1/reservations/hotes/${hoteId}/semaines`;
 export const BOOK_DAY = (hoteId: number) => `/api/v2/hotes/${hoteId}/reservations-jours`;
+
+export const EVENING = (hoteId: number) => `/api/v1/hotes/${hoteId}/resa-soir`;

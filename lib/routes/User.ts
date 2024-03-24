@@ -165,6 +165,23 @@ export class User {
     });
   }
 
+  /** This method is used to get if the user can book the evening.
+   * @param hoteId The ID of the hote to get.
+   * @param token The token of the user.
+   */
+  async canBookEvening(hoteId: number, token: string): Promise<boolean> {
+    return this.#manager.makeAuthRequest<boolean>({
+      method: "GET",
+      url: endpoints.EVENING(hoteId),
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }).then((data: unknown) => {
+      let typedData = data as boolean;
+      return typedData;
+    });
+  }
+
   /** This method is used to get the state of evening reservation.
      * @param hoteId The ID of the hote to get.
      * @param token The token of the user.

@@ -173,6 +173,19 @@ export class Turboself {
     return this.#user.getBooksWeeksAvailable(this.hoteId, this.token);
   }
 
+  public async canBookEvening() {
+    if (await this.isExpire()) {
+      if (this.mail && this.password) {
+        await this.refreshToken();
+      }
+      else {
+        throw new Error("Token Expired");
+      }
+    }
+
+    return this.#user.canBookEvening(this.hoteId, this.token);
+  }
+
   public async getEveningBookingState() {
     if (await this.isExpire()) {
       if (this.mail && this.password) {
