@@ -121,6 +121,19 @@ export class Turboself {
     return this.#school.getSchool(etabId);
   }
 
+  public async seachSchool(q: string, limit: number) {
+    if (await this.isExpire()) {
+      if (this.mail && this.password) {
+        await this.refreshToken();
+      }
+      else {
+        throw new Error("Token Expired");
+      }
+    }
+
+    return this.#school.seachSchool(q, limit);
+  }
+
   public async getCurrentBookingWeek() {
     if (await this.isExpire()) {
       if (this.mail && this.password) {
