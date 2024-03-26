@@ -1,3 +1,3 @@
 export * from "./authenticate";
-export * from "./api/etablishmentSearch";
-export * from "./api/etablishmentGet";
+export * from "./api/establishmentSearch";
+export * from "./api/establishmentGet";
