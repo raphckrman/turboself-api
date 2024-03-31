@@ -62,7 +62,7 @@ export const getHost = async (token: string, id: number): Promise<Host> => {
             lastSelfSync: raw.etab.configurationSelf?.dateDernSynchro ?? ''
         }
     );
-    return new Host(token, 
+    return new Host( 
         raw.id, 
         raw.prenom, 
         raw.nom, 
@@ -79,6 +79,7 @@ export const getHost = async (token: string, id: number): Promise<Host> => {
         {
             lastSync: raw.dateDernSynchro ?? ''
         },
-        raw.carteCodee ?? -1
+        raw.carteCodee ?? -1,
+        token
     )
 };
