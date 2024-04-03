@@ -4,24 +4,24 @@ import { LOGIN } from "../utils/endpoints";
 import { TurboselfFetcher } from "../utils/fetcher";
 
 export const authenticateWithCredentials = async (options: AuthFlowBody): Promise<Turboself> => {
-    const response = await TurboselfFetcher("https://api-rest-prod.incb.fr" + LOGIN(), {
-        method: "POST",
-        body: JSON.stringify(options),
-        headers: {
-            "Content-Type": "application/json",
-        }
-    });
+  const response = await TurboselfFetcher("https://api-rest-prod.incb.fr" + LOGIN(), {
+    method: "POST",
+    body: JSON.stringify(options),
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
 
-    const raw = await response.json() as AuthFlowResult;
+  const raw = await response.json() as AuthFlowResult;
 
-    return new Turboself(raw.access_token, {
-        username: options.username,
-        password: options.password,
-        extra: {
-            userId: raw.userId,
-            hoteId: raw.hoteId,
-            username: options.username,
-            password: options.password
-        }
-    });
-}
+  return new Turboself(raw.access_token, {
+    username: options.username,
+    password: options.password,
+    extra: {
+      userId: raw.userId,
+      hoteId: raw.hoteId,
+      username: options.username,
+      password: options.password
+    }
+  });
+};
