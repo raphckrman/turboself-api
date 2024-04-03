@@ -3,20 +3,32 @@ import { EtablishmentConfigurationReservation, EtablishmentConfigurationSelf } f
 export class Establishment {
     constructor(
         public code: string,
+        /** Name of the establishment */
         public name: string,
+        /** Turboself Version used by the establishment */
         public version: string,
+        /** Etablishment Identifier */
         public id?: number | null,
+        /** TurboSelf etablishment Identifier */
         public turboselfId?: number,
         
+        /** Currency symbol used by the establishment */
         public currencySymbol?: string,
+        /** Minimum amount of meal for the establishment */
         public minimumMeal?: number,
+        /** Minimum amount of creance for the establishment */
         public minimumCreance?: number,
+        /** Minimum amount of credit for the establishment */
         public minimumCredit?: number,
         
+        /** HTML Welcome Message */
         public welcomeMessage?: string,
         
+        /** If the establishment is disabled */
         public disabled?: boolean,
+        /** UAI Code (Unité Administrative Immatriculée) */
         public uai?: string,
+        /** MAC Address of the establishment's TurboSelf server */
         public macServerAddress?: string,
         public reservations?: Array<{
             id: number,
@@ -31,14 +43,21 @@ export class Establishment {
             city?: string,
         },
         public contact?: {
+            /** Establishment phone number */
             phoneNumber?: string,
+            /** Establishment website */
             website?: string,
+            /** Establishment email */
             email?: string,
         },
         public permissions?: {
+            /** If the student can use the QR code for the establishment */
             canStudentUseQrCode?: boolean,
+            /** If the dinner companion can use the QR code for the establishment */
             canCompanionUseQrCode?: boolean,
+            /** If the intern can use the QR code for the establishment */
             canInternUseQrCode?: boolean,
+            /** If the student can see the history of the establishment */
             canStudentSeeHistory?: boolean
         },
         public SynchronizationDate?: {
