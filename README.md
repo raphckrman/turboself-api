@@ -5,7 +5,7 @@
 [![npm](https://img.shields.io/npm/dw/turboself-api)](https://www.npmjs.com/package/turboself-api)
 [![npm](https://img.shields.io/npm/dt/turboself-api)](https://www.npmjs.com/package/turboself-api)
 
-A simple API to interact with the TurboSelf API.
+A simple wrapper to interact with the TurboSelf API.
 
 > [!warning]
 > This project is not affiliated with TurboSelf or INCB in any way.
@@ -31,3 +31,10 @@ main()
 
 ### Other exemples
 To see more examples, check the [examples](https://github.com/raphckrman/turboself-api/tree/dev/examples) folder.
+
+## ௷ Credits
+
+Thanks to the following people for their contributions to this project:
+
+- [Remy Godet](https://github.com/godetremy)
+- [Tom Theret](https://github.com/tom-theret)
