@@ -2,8 +2,8 @@ import { authenticateWithCredentials, searchEstablishment } from "../../lib"
 
 async function main() {
     const client = await authenticateWithCredentials({
-        username: "your email",
-        password: "your password"
+        username: "your_email",
+        password: "your_password"
     })
 
     const host = await client.getHost()
