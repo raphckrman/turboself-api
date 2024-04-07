@@ -15,13 +15,9 @@ export const authenticateWithCredentials = async (options: AuthFlowBody): Promis
   const raw = await response.json() as AuthFlowResult;
 
   return new Turboself(raw.access_token, {
+    hoteId: raw.hoteId,
+    userId: raw.userId,
     username: options.username,
-    password: options.password,
-    extra: {
-      userId: raw.userId,
-      hoteId: raw.hoteId,
-      username: options.username,
-      password: options.password
-    }
+    password: options.password
   });
 };

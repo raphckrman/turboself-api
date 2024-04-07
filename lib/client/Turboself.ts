@@ -21,11 +21,7 @@ export default class Turboself {
   tokenExpires: number = 0;
   constructor(
     public token: string,
-    private loginData: {
-      username: string;
-      password: string;
-      extra: AuthFlowData;
-    }
+    private loginData: AuthFlowData
   ) {
     this.token = token;
     this.tokenExpires = Date.now() + 55 * 60 * 1000;
@@ -65,7 +61,7 @@ export default class Turboself {
     if (Date.now() > this.tokenExpires) {
       await this.refreshToken();
     }
-    return await getHost(this.token, this.loginData.extra.hoteId);
+    return await getHost(this.token, this.loginData.hoteId);
   }
 
   /** This method is used to get the balance of a Turboself user.
@@ -74,7 +70,7 @@ export default class Turboself {
     if (Date.now() > this.tokenExpires) {
       await this.refreshToken();
     }
-    return await getBalance(this.token, this.loginData.extra.hoteId);
+    return await getBalance(this.token, this.loginData.hoteId);
   }
 
   /** This method is used to get the siblings of a Turboself user.
@@ -83,7 +79,7 @@ export default class Turboself {
     if (Date.now() > this.tokenExpires) {
       await this.refreshToken();
     }
-    return await getSiblings(this.token, this.loginData.extra.hoteId);
+    return await getSiblings(this.token, this.loginData.hoteId);
   }
 
   /** This method is used to get the latest payment of a Turboself user.
@@ -92,7 +88,7 @@ export default class Turboself {
     if (Date.now() > this.tokenExpires) {
       await this.refreshToken();
     }
-    return await getHistory(this.token, this.loginData.extra.hoteId);
+    return await getHistory(this.token, this.loginData.hoteId);
   }
 
   /** This method is used to get the latest payment of a Turboself user.
@@ -101,7 +97,7 @@ export default class Turboself {
     if (Date.now() > this.tokenExpires) {
       await this.refreshToken();
     }
-    return await getLatestPayment(this.token, this.loginData.extra.hoteId);
+    return await getLatestPayment(this.token, this.loginData.hoteId);
   }
 
   /** This method is used to get if the user can book evening.
@@ -110,7 +106,7 @@ export default class Turboself {
     if (Date.now() > this.tokenExpires) {
       await this.refreshToken();
     }
-    return await getCanBookEvening(this.token, this.loginData.extra.hoteId);
+    return await getCanBookEvening(this.token, this.loginData.hoteId);
   }
 
   /** This method is used to get a booking week.
@@ -120,7 +116,7 @@ export default class Turboself {
     if (Date.now() > this.tokenExpires) {
       await this.refreshToken();
     }
-    return await getBookingWeek(this.token, this.loginData.extra.hoteId, weekNumber);
+    return await getBookingWeek(this.token, this.loginData.hoteId, weekNumber);
   }
 
   /** This method is used to book a meal.
@@ -135,6 +131,6 @@ export default class Turboself {
     }
     if (!dayOfWeek) dayOfWeek = ((new Date()).getDay()) - 1;
     if (!bookEvening) bookEvening = false;
-    return await bookMeal(this.token, this.loginData.extra.hoteId, id, book === false ? 0 : 1, bookEvening === false ? 0 : 1, dayOfWeek);
+    return await bookMeal(this.token, this.loginData.hoteId, id, book === false ? 0 : 1, bookEvening === false ? 0 : 1, dayOfWeek);
   }
 }
