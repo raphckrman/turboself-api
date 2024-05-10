@@ -29,7 +29,7 @@ export default class Turboself {
   private async refreshToken(): Promise<boolean> {
     await authenticateWithCredentials({
       username: this.loginData.username,
-      password: this.loginData.password,
+      password: this.loginData.password
     }).then((data) => {
       this.token = data.token;
       this.tokenExpires = Date.now() + 55 * 60 * 1000;

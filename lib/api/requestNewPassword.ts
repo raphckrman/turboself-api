@@ -6,7 +6,7 @@ export const requestNewPassword = async (email: string): Promise<RequestNewPassw
   const response = await TurboselfFetcher("https://api-rest-prod.incb.fr" + SEND_PASSWORD_RESET_REQUEST(email), {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     }
   });
 
