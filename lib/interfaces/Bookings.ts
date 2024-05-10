@@ -35,7 +35,7 @@ export interface DayBooking {
   },
   autorise: boolean,
   msg: string,
-  dayLabel: string
+  dayLabel?: string
 }
 
 export interface BookingPrice {
