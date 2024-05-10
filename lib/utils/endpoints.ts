@@ -1,4 +1,5 @@
 export const LOGIN = () => "/api/v1/auth/login";
+export const SEND_PASSWORD_RESET_REQUEST = (email: string) => `/api/v1/utilisateurs/password?email=${email}`;
 
 export const SEARCH_ETABLISHMENT = (city: string, limit: number) => `/api/v1/etablissements?q=${city}&limit=${limit}`;
 export const GET_ETABLISHMENT = (id: number) => `/api/v1/etablissements/etabId/${id}`;
