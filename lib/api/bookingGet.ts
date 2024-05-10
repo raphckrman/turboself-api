@@ -33,13 +33,18 @@ export const getBookingWeek = async (token: string, id: number, weekNumber?: num
 
     let days = await Promise.all(terminal.jours.map(async (day) => {
       let month = weekDate.getMonth();
-      let dayNumber = parseInt(day.dayLabel.split(" ")[1])+1;
-      let firstDayOfWeek = parseInt(terminal.jours[0].dayLabel.split(" ")[1]);
+      if (day.dayLabel) {
+        let dayNumber = parseInt(day.dayLabel.split(" ")[1])+1;
+        let firstDayOfWeek = terminal.jours[0]?.dayLabel ? parseInt(terminal.jours[0].dayLabel.split(" ")[1]) : 0;
 
-      if (firstDayOfWeek > dayNumber) {
-        month = month+1;
+        if (firstDayOfWeek > dayNumber) {
+          month = month+1;
+        }
+        var date = new Date(weekDate.getFullYear(), month, dayNumber);
       }
-      let date = new Date(weekDate.getFullYear(), month, dayNumber);
+      else {
+        var date = new Date(weekDate.getFullYear(), weekDate.getMonth(), day.dayOfWeek);
+      }
 
       return new BookingDay(
         token,
