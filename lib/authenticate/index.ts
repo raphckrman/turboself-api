@@ -21,3 +21,19 @@ export const authenticateWithCredentials = async (options: AuthFlowBody): Promis
     password: options.password
   });
 };
+
+export const authenticateWithTicket = async (ent: "PRONOTE" | string, ticket: string): Promise<Turboself> => {
+  const response = await TurboselfFetcher(`https://espacenumerique.turbo-self.com/Connexion.aspx?ent=${ent}&ticket=${ticket}`, {
+    method: "GET"
+  });
+
+  const tempUsername = response.headers.get("set-cookie")?.split(";")[0].split("=")[1];
+  const tempPassword = response.headers.get("set-cookie", 1)?.split(";")[0].split("=")[1];
+
+  const TS = authenticateWithCredentials({
+    username: tempUsername,
+    password: tempPassword
+  });
+
+  return TS;
+};

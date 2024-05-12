@@ -3,6 +3,8 @@ export interface AuthFlowBody {
   username: string;
   /** Password of the user */
   password: string;
+  /** ID of the user */
+  hoteId?: number;
 }
 
 export interface AuthFlowResult {
