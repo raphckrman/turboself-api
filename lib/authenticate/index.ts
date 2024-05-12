@@ -31,8 +31,8 @@ export const authenticateWithTicket = async (ent: "PRONOTE" | string, ticket: st
   const tempPassword = response.headers.get("set-cookie", 1)?.split(";")[0].split("=")[1];
 
   const TS = authenticateWithCredentials({
-    username: tempUsername,
-    password: tempPassword
+    username: tempUsername ?? "",
+    password: tempPassword ?? ""
   });
 
   return TS;
