@@ -3,7 +3,7 @@ import { AuthFlowBody, AuthFlowResult, AuthFlowData } from "../interfaces/AuthFl
 import { LOGIN } from "../utils/endpoints";
 import { TurboselfFetcher } from "../utils/fetcher";
 
-export const authenticateWithCredentials = async (options: AuthFlowBody): Promise<Turboself> => {
+export const authenticateWithCredentials = async (options: AuthFlowBody, useTicket?: boolean | false): Promise<Turboself> => {
   const response = await TurboselfFetcher("https://api-rest-prod.incb.fr" + LOGIN(), {
     method: "POST",
     body: JSON.stringify(options),
@@ -19,7 +19,7 @@ export const authenticateWithCredentials = async (options: AuthFlowBody): Promis
     userId: raw.userId,
     username: options.username,
     password: options.password
-  });
+  }, useTicket ?? false);
 };
 
 export const authenticateWithTicket = async (ent: "PRONOTE" | string, ticket: string): Promise<Turboself> => {
@@ -28,12 +28,12 @@ export const authenticateWithTicket = async (ent: "PRONOTE" | string, ticket: st
   });
 
   const tempUsername = response.headers.get("set-cookie")?.split(";")[0].split("=")[1];
-  const tempPassword = response.headers.get("set-cookie", 1)?.split(";")[0].split("=")[1];
+  const tempPassword = response.headers.get("set-cookie")?.split(";")[0].split("=")[1];
 
   const TS = authenticateWithCredentials({
     username: tempUsername ?? "",
     password: tempPassword ?? ""
-  });
+  }, true);
 
   return TS;
 };

@@ -8,7 +8,7 @@ import { getHost } from "../api/hostGet";
 import { getLatestPayment } from "../api/lastPaymentGet";
 import { getSiblings } from "../api/siblingsGet";
 import { requestNewPassword } from "../api/requestNewPassword";
-import { authenticateWithCredentials } from "../authenticate";
+import { authenticateWithCredentials, authenticateWithTicket } from "../authenticate";
 import { AuthFlowData } from "../interfaces/AuthFlow";
 import { RequestNewPasswordResult } from "../interfaces/Account";
 import { Balance } from "../parser/Balance";
@@ -21,9 +21,19 @@ import { LatestPayment } from "../parser/LatestPayment";
 
 export default class Turboself {
   tokenExpires: number = 0;
-  constructor(public token: string, private loginData: AuthFlowData) {
+  constructor(public token: string, private loginData: AuthFlowData, public useTicket: boolean = false) {
     this.token = token;
     this.tokenExpires = Date.now() + 55 * 60 * 1000;
+    this.useTicket = useTicket;
+  }
+
+  private async refreshTicket(ent: "PRONOTE" | string, ticket: string): Promise<boolean> {
+    await authenticateWithTicket(ent, ticket).then((data) => {
+      this.token = data.token;
+      this.tokenExpires = Date.now() + 55 * 60 * 1000;
+    });
+
+    return true;
   }
 
   private async refreshToken(): Promise<boolean> {
@@ -60,7 +70,8 @@ export default class Turboself {
    */
   public async getHost(): Promise<Host> {
     if (Date.now() > this.tokenExpires) {
-      await this.refreshToken();
+      if (!this.useTicket) await this.refreshToken();
+      else throw new Error("Please provide a new ticket, exemple: client.refreshTicket('your_ent', 'new ticket')");
     }
     return await getHost(this.token, this.loginData.hoteId);
   }
@@ -69,7 +80,8 @@ export default class Turboself {
    */
   public async getBalance(): Promise<Balance> {
     if (Date.now() > this.tokenExpires) {
-      await this.refreshToken();
+      if (!this.useTicket) await this.refreshToken();
+      else throw new Error("Please provide a new ticket, exemple: client.refreshTicket('your_ent', 'new ticket')");
     }
     return await getBalance(this.token, this.loginData.hoteId);
   }
@@ -78,7 +90,8 @@ export default class Turboself {
    */
   public async getSiblings(): Promise<Host[]> {
     if (Date.now() > this.tokenExpires) {
-      await this.refreshToken();
+      if (!this.useTicket) await this.refreshToken();
+      else throw new Error("Please provide a new ticket, exemple: client.refreshTicket('your_ent', 'new ticket')");
     }
     return await getSiblings(this.token, this.loginData.hoteId);
   }
@@ -87,7 +100,8 @@ export default class Turboself {
    */
   public async getHistory(): Promise<History[]> {
     if (Date.now() > this.tokenExpires) {
-      await this.refreshToken();
+      if (!this.useTicket) await this.refreshToken();
+      else throw new Error("Please provide a new ticket, exemple: client.refreshTicket('your_ent', 'new ticket')");
     }
     return await getHistory(this.token, this.loginData.hoteId);
   }
@@ -96,7 +110,8 @@ export default class Turboself {
    */
   public async getLatestPayment(): Promise<LatestPayment> {
     if (Date.now() > this.tokenExpires) {
-      await this.refreshToken();
+      if (!this.useTicket) await this.refreshToken();
+      else throw new Error("Please provide a new ticket, exemple: client.refreshTicket('your_ent', 'new ticket')");
     }
     return await getLatestPayment(this.token, this.loginData.hoteId);
   }
@@ -105,7 +120,8 @@ export default class Turboself {
    */
   public async canBookEvening(): Promise<boolean> {
     if (Date.now() > this.tokenExpires) {
-      await this.refreshToken();
+      if (!this.useTicket) await this.refreshToken();
+      else throw new Error("Please provide a new ticket, exemple: client.refreshTicket('your_ent', 'new ticket')");
     }
     return await getCanBookEvening(this.token, this.loginData.hoteId);
   }
@@ -115,7 +131,8 @@ export default class Turboself {
    */
   public async getBookingWeek(weekNumber?: number): Promise<BookingWeek> {
     if (Date.now() > this.tokenExpires) {
-      await this.refreshToken();
+      if (!this.useTicket) await this.refreshToken();
+      else throw new Error("Please provide a new ticket, exemple: client.refreshTicket('your_ent', 'new ticket')");
     }
     return await getBookingWeek(this.token, this.loginData.hoteId, weekNumber);
   }
