@@ -1,6 +1,6 @@
 {
   "name": "turboself-api",
-  "version": "1.1.6",
+  "version": "1.2.6",
   "description": "A wrapper around Turboself internal API.",
   "repository": "github:raphckrman/turboself-api",
   "main": "./dist/index.js",
