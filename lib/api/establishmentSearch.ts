@@ -3,8 +3,8 @@ import { Establishment } from "../parser/Establishment";
 import { SEARCH_ETABLISHMENT } from "../utils/endpoints";
 import { TurboselfFetcher } from "../utils/fetcher";
 
-export const searchEstablishment = async (city: string, limit: number): Promise<Array<Establishment>> => {
-  const response = await TurboselfFetcher("https://api-rest-prod.incb.fr" + SEARCH_ETABLISHMENT(city, limit), {
+export const searchEstablishment = async (city?: string, code?: number, limit?: number): Promise<Array<Establishment>> => {
+  const response = await TurboselfFetcher("https://api-rest-prod.incb.fr" + SEARCH_ETABLISHMENT(city, code, limit), {
     method: "GET",
     headers: {
       "Content-Type": "application/json"

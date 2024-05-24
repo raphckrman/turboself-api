@@ -1,7 +1,8 @@
 export const LOGIN = () => "/api/v1/auth/login";
 export const SEND_PASSWORD_RESET_REQUEST = (email: string) => `/api/v1/utilisateurs/password?email=${email}`;
+export const CREATE_ACCOUNT = () => "/api/v1/creation-comptes";
 
-export const SEARCH_ETABLISHMENT = (city: string, limit: number) => `/api/v1/etablissements?q=${city}&limit=${limit}`;
+export const SEARCH_ETABLISHMENT = (city?: string, code?: number, limit?: number) => `/api/v1/etablissements?q=${city ?? ""}&code2p5=${code ?? ""}&limit=${limit ?? 10}`;
 export const GET_ETABLISHMENT = (id: number) => `/api/v1/etablissements/etabId/${id}`;
 
 export const GET_HOST = (id: number) => `/api/v1/hotes/${id}`;
