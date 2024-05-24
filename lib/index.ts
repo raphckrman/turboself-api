@@ -8,3 +8,4 @@ export * from "./api/hostGet";
 export * from "./api/siblingsGet";
 export * from "./api/historyGet";
 export * from "./api/lastPaymentGet";
+export * from "./api/accountCreationPost";

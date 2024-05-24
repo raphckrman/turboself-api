@@ -19,3 +19,34 @@ export interface RequestNewPasswordResult {
   /** Message identifier */
   messageId: string;
 }
+
+export interface AccountCreationPostBody {
+  carte: string;
+  token: string | null;
+  code2p5: number;
+  nom: string;
+  prenom: string;
+  email: string;
+  password: string;
+}
+
+
+export interface AccountCreationPostResult {
+  carte: string;
+  token: string | null;
+  code2p5: number;
+  nom: string;
+  prenom: string;
+  email: string;
+  id: number
+}
+
+export interface AccountCreation {
+  card: string;
+  token: string | null;
+  firstName: string;
+  lastName: string;
+  email: string;
+  id: number;
+  code2p5: number;
+}
