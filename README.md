@@ -12,10 +12,10 @@ A simple wrapper to interact with the TurboSelf API.
 
 ## 📝 Roadmap
 
-- [ ] Authentification
+- [X] Authentification
 
   - [x] With credentials
-  - [ ] With token (with Pronote for example)
+  - [X] With token (with Pronote for example)
 
 - [x] Reset password request (with email)
 
