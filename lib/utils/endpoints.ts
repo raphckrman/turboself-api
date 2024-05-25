@@ -14,3 +14,5 @@ export const GET_SIBLINGS = (id: number) => `/api/v1/hotes/${id}/freres-soeurs`;
 
 export const GET_BOOKING_WEEK = (id: number, weekNumber: number) => `/api/v1/reservations/hotes/${id}/semaines?num=${weekNumber}`;
 export const PUT_BOOK_MEAL = (id: number) => `/api/v2/hotes/${id}/reservations-jours`;
+
+export const POST_INIT_PAYMENT = (id: number) => `/api/v2/hotes/${id}/paiements/init`;

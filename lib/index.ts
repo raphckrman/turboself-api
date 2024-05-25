@@ -9,3 +9,7 @@ export * from "./api/siblingsGet";
 export * from "./api/historyGet";
 export * from "./api/lastPaymentGet";
 export * from "./api/accountCreationPost";
+export * from "./api/generatePaymentURL";
+export * from "./api/canBookEveningGet";
+export * from "./api/bookingGet";
+export * from "./api/bookDay";

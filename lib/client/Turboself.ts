@@ -18,6 +18,7 @@ import { Establishment } from "../parser/Establishment";
 import { History } from "../parser/History";
 import { Host } from "../parser/Host";
 import { LatestPayment } from "../parser/LatestPayment";
+import { generatePaymentURL } from "../api/generatePaymentURL";
 
 export default class Turboself {
   tokenExpires: number = 0;
@@ -152,5 +153,15 @@ export default class Turboself {
       bookEvening === false ? 0 : 1,
       dayOfWeek
     );
+  }
+
+  /** This method is used to generate an URL to pay.
+   * @param amount Amount in cents to pay.
+   */
+  public async generatePaymentURL(amount: number): Promise<string> {
+    if (Date.now() > this.tokenExpires) {
+      await this.refreshToken();
+    }
+    return await generatePaymentURL(this.token, this.loginData.hoteId, amount);
   }
 }

@@ -1,4 +1,4 @@
-import { AccountCreationPostResult, AccountCreation, AccountCreationPostBody } from "../interfaces/Account";
+import { AccountCreationPostResult, AccountCreation } from "../interfaces/Account";
 import { CREATE_ACCOUNT } from "../utils/endpoints";
 import { TurboselfFetcher } from "../utils/fetcher";
 
