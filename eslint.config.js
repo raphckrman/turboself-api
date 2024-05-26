@@ -1,3 +1,5 @@
+// Rules from: https://github.com/DinographicPixels/TouchGuild
+
 module.exports = [
   { // Apply to `cjs`, `.mjs` and `.js` files.
     files: ["**/*.?([cm])js"]
