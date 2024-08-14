@@ -29,14 +29,23 @@ export class Client {
     return true;
   }
 
+  /** This method is used to get the host of the client.
+   */
   public async getHost(): Promise<Host> {
     await this.refreshBearerToken();
     return await getHost(this.credentials.token, this.credentials.hostId);
   }
+
+  /** This method is used to get the balances of the client.
+   */
   public async getBalances(): Promise<Array<Balance>> {
     await this.refreshBearerToken();
     return await getBalances(this.credentials.token, this.credentials.hostId);
   }
+
+  /** This method is used to get the establishment of the client.
+     * @param establishmentId The establishment ID to get. If not provided, the establishment of the host will be returned.
+     */
   public async getEstablishment(establishmentId?: number): Promise<Establishment> {
     await this.refreshBearerToken();
     if (!this.host && !establishmentId) {
@@ -44,11 +53,21 @@ export class Client {
     }
     return getEstablishment(this.credentials.token, establishmentId || this.host?.etabId!);
   }
+
+  /** This method is used to search for establishments.
+     * @param query The query to search for.
+     * @param code The establishment code to search for.
+     * @param limit The maximum number of establishments to return.
+     * @param minimalist Whether to return only minimalist data or the full establishment data (more requests).
+     */
   public async searchEstablishments(query: string, code: string, limit: number, minimalist: boolean = false): Promise<Array<Establishment>> {
     await this.refreshBearerToken();
     return await searchEstablishments(query, code, limit, minimalist, this.credentials.token);
   }
 
+  /** This method is used to initialize a payment.
+   * @param amount The amount
+   */
   public async initPayment(amount: number): Promise<Payment> {
     await this.refreshBearerToken();
     return await initPayment(this.credentials.token, this.credentials.hostId, amount);
