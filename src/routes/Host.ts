@@ -22,6 +22,7 @@ export const getHost = async (token: string, hostId: number): Promise<Host> => {
     rawHostGet.prixDej,
     rawHostGet.type,
     rawHostGet.carteCodee,
+    rawHostGet.urlCafeteria || null,
     {
       payment: rawHostGet.droitPaiement,
       reservation: rawHostGet.droitReservation,
