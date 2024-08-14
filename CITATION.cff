@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: turboself-api
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - username: raphckrman
+    email: raphckrman@apagnan.org
+repository-code: 'https://github.com/raphckrman/turboself-api'
+repository-artifact: 'https://www.npmjs.com/package/turboself-api'
+abstract: >-
+  A simple wrapper around Turboself's internal
+  API.
+keywords:
+  - turboself
+  - wrapper
+  - api
+license: GPL-3.0
