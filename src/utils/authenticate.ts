@@ -8,40 +8,40 @@ import { rawAuthResult } from "../types/authentication";
 const manager = new RestManager("https://api-rest-prod.incb.fr/api");
 
 export const authenticateWithCredentials = async (
-  username: string,
-  password: string,
-  remember: boolean = true,
-  minimalist: boolean = false
+    username: string,
+    password: string,
+    remember = true,
+    minimalist = false
 ): Promise<Client> => {
-  const data = await manager.post<rawAuthResult>(AUTH_LOGIN(), {
-    username: username,
-    password: password
-  });
-
-  if (minimalist) {
-    return new Client({
-      token: data.access_token,
-      hostId: data.hoteId,
-      userId: data.userId,
-      username: remember ? username : null,
-      password: remember ? password : null,
-      token_expiry: Date.now() + 3300000
+    const data = await manager.post<rawAuthResult>(AUTH_LOGIN(), {
+        username,
+        password
     });
-  }
 
-  const host = await getHost(data.access_token, data.hoteId);
+    if (minimalist) {
+        return new Client({
+            token:        data.access_token,
+            hostId:       data.hoteId,
+            userId:       data.userId,
+            username:     remember ? username : null,
+            password:     remember ? password : null,
+            token_expiry: Date.now() + 3300000
+        });
+    }
 
-  const [balance, establishment] = await Promise.all([
-    getBalances(data.access_token, data.hoteId),
-    getEstablishment(data.access_token, host.etabId)
-  ]);
+    const host = await getHost(data.access_token, data.hoteId);
 
-  return new Client({
-    token: data.access_token,
-    hostId: data.hoteId,
-    userId: data.userId,
-    username: remember ? username : null,
-    password: remember ? password : null,
-    token_expiry: Date.now() + 3300000
-  }, establishment, host, balance);
+    const [balance, establishment] = await Promise.all([
+        getBalances(data.access_token, data.hoteId),
+        getEstablishment(data.access_token, host.etabId)
+    ]);
+
+    return new Client({
+        token:        data.access_token,
+        hostId:       data.hoteId,
+        userId:       data.userId,
+        username:     remember ? username : null,
+        password:     remember ? password : null,
+        token_expiry: Date.now() + 3300000
+    }, establishment, host, balance);
 };
