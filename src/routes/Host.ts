@@ -4,13 +4,15 @@ import {
     HOST_BALANCE,
     HOST_HISTORY_GLOBAL,
     HOST_HISTORY_SPECIFIC,
-    HOST_INIT_PAYMENT
+    HOST_INIT_PAYMENT,
+    HOST_PAYMENTS_LATEST
 } from "../rest/endpoints";
 import { Host } from "../structures/Host";
 import { rawHistoryGet, rawHostBalanceResult, rawHostResult, rawPaymentInitResult } from "../types/host";
 import { Balance } from "../structures/Balance";
 import { Payment } from "../structures/Payment";
 import { HistoryEvent } from "../structures/HistoryEvent";
+import { rawPaymentResult } from "../types/payment";
 
 const manager = new RestManager("https://api-rest-prod.incb.fr/api");
 
@@ -75,12 +77,13 @@ export const initPayment = async (token: string, hostId: number, amount: number)
         }
     });
     return new Payment(
+        null,
+        hostId,
+        amount,
         rawPaymentInit.token,
         rawPaymentInit.redirectURL,
-        amount,
         "https://espacenumerique.turbo-self.com/PagePaiementRefuse.aspx?token=" + rawPaymentInit.token,
         "https://espacenumerique.turbo-self.com/PagePaiementValide.aspx?token=" + rawPaymentInit.token,
-        hostId,
         new Date()
     );
 };
@@ -107,5 +110,19 @@ export const getHistoryEvent = async (token: string, hostId: number, eventId: nu
         new Date(rawHistory.date),
         rawHistory.detail,
         (rawHistory.credit ?? 0) - (rawHistory.debit ?? 0)
+    );
+};
+
+export const getLastPayment = async (token: string, hostId: number): Promise<Payment> => {
+    const rawPayment = await manager.get<rawPaymentResult>(HOST_PAYMENTS_LATEST(hostId), { Authorization: `Bearer ${token}` });
+    return new Payment(
+        rawPayment.id,
+        hostId,
+        rawPayment.montant,
+        rawPayment.token,
+        null,
+        "https://espacenumerique.turbo-self.com/PagePaiementRefuse.aspx?token=" + rawPayment.token,
+        "https://espacenumerique.turbo-self.com/PagePaiementValide.aspx?token=" + rawPayment.token,
+        new Date(rawPayment.date)
     );
 };

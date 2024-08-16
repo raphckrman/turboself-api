@@ -6,16 +6,22 @@ export interface rawPaymentResult {
     date: string;
     /** ? Not referenced in API Documentation */
     type: unknown;
+    /** Amount of the payment */
     montant: number;
+    /** Payline payment synchronization date */
     dateMaj: string;
-    statut: "OK" | "INIT" | "ANNULE";
+    /** Payment status */
+    statut: "OK" | "INIT" | "ANNULE" | "ERREUR";
+    /** Payline payment transaction ID */
     idTransaction: string | null;
+    /** Payline payment token */
     token: string;
-    paiements: Array<{
+    paiements?: Array<{
         id: number;
         compte: unknown;
         appli: unknown;
         montant: number;
     }>;
+    /** Status message (eg. Paiement refusé) */
     msg: string;
 }

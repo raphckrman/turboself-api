@@ -9,6 +9,7 @@ import {
     getHistory,
     getHistoryEvent,
     getHost,
+    getLastPayment,
     initPayment
 } from "../routes/Host";
 import { getEstablishment, searchEstablishments } from "../routes/Establishment";
@@ -77,7 +78,12 @@ export class Client {
         return getHost(this.credentials.token, this.credentials.hostId);
     }
 
-
+    /** This method is used to get the last payment of the client.
+     */
+    async getLastPayment(): Promise<Payment> {
+        await this.refreshBearerToken();
+        return getLastPayment(this.credentials.token, this.credentials.hostId);
+    }
     /** This method is used to get a specific payment.
      * @param paymentToken The payment token
      */

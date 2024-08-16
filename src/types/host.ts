@@ -84,9 +84,14 @@ export interface rawPaymentInitResult {
 }
 
 export interface rawHistoryGet {
+    /** Internal identifier of a host's history in digital space */
     id: number;
+    /** History date */
     date: string;
+    /** Operation details */
     detail: string;
+    /** Debit amount */
     debit: number | null;
+    /** Credit amount */
     credit: number | null;
 }

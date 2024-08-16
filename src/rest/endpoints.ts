@@ -17,7 +17,6 @@ export const HOST_HISTORY_GLOBAL = (hostId: number) => `v1/historiques/hotes/${h
 export const HOST_INIT_PAYMENT = (hostId: number) => `v2/hotes/${hostId}/paiements/init`;
 export const HOST_PAYMENTS_LATEST = (hostId: number) => `v2/hotes/${hostId}/paiements-payline/latest`;
 export const HOST_HISTORY_SPECIFIC = (hostId: number, eventId: number) => `v2/hotes/${hostId}/historiques/${eventId}`;
-export const HOST_PAYMENTS_SPECIFIC = (hostId: number, paymentId: number) => `v2/hotes/${hostId}/paiements/${paymentId}`;
 export const HOST_RESERVATIONS_SPECIFIC = (hostId: number, reservationId: string) => `v2/hotes/${hostId}/reservations/${reservationId}`;
 
 export const ESTABLISHMENT_BY_CODE = (code: string) => `v2/etablissements?code2p5=${code}`;
