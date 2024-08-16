@@ -17,11 +17,12 @@ export const HOST_HISTORY_GLOBAL = (hostId: number) => `v1/historiques/hotes/${h
 export const HOST_INIT_PAYMENT = (hostId: number) => `v2/hotes/${hostId}/paiements/init`;
 export const HOST_PAYMENTS_LATEST = (hostId: number) => `v2/hotes/${hostId}/paiements-payline/latest`;
 export const HOST_HISTORY_SPECIFIC = (hostId: number, eventId: number) => `v2/hotes/${hostId}/historiques/${eventId}`;
+export const HOST_RESERVATIONS = (hostId: number, week?: number) => `v1/reservations/hotes/${hostId}/semaines${"?num=" + week || ""}`;
 export const HOST_RESERVATIONS_SPECIFIC = (hostId: number, reservationId: string) => `v2/hotes/${hostId}/reservations/${reservationId}`;
+export const HOST_BOOK_MEAL = (hostId: number) => `v2/hotes/${hostId}/reservations-jours`;
 
 export const ESTABLISHMENT_BY_CODE = (code: string) => `v2/etablissements?code2p5=${code}`;
 export const ESTABLISHMENT_BY_ID = (establishmentId: number) => `v1/etablissements/etabId/${establishmentId}`;
-export const ESTABLISHMENT_ACCOUNT = (establishmentId: number, accountId: number) => `v2/etablissements/${establishmentId}/comptes/${accountId}`;
 export const ESTABLISHMENT_SEARCH = (query: string, code: string, limit: number) => `v1/etablissements?q=${query}&code2p5=${code}&limit=${limit}`;
 
 export const TERMINALS_BY_ID = (terminalId: number) => `v1/bornes/${terminalId}`;
