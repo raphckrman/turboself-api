@@ -1,9 +1,16 @@
 import { RestManager } from "../rest/RESTManager";
-import { HOST, HOST_BALANCE, HOST_INIT_PAYMENT } from "../rest/endpoints";
+import {
+    HOST,
+    HOST_BALANCE,
+    HOST_HISTORY_GLOBAL,
+    HOST_HISTORY_SPECIFIC,
+    HOST_INIT_PAYMENT
+} from "../rest/endpoints";
 import { Host } from "../structures/Host";
-import { rawHostBalanceResult, rawHostResult, rawPaymentInitResult } from "../types/host";
+import { rawHistoryGet, rawHostBalanceResult, rawHostResult, rawPaymentInitResult } from "../types/host";
 import { Balance } from "../structures/Balance";
 import { Payment } from "../structures/Payment";
+import { HistoryEvent } from "../structures/HistoryEvent";
 
 const manager = new RestManager("https://api-rest-prod.incb.fr/api");
 
@@ -75,5 +82,30 @@ export const initPayment = async (token: string, hostId: number, amount: number)
         "https://espacenumerique.turbo-self.com/PagePaiementValide.aspx?token=" + rawPaymentInit.token,
         hostId,
         new Date()
+    );
+};
+
+export const getHistory = async (token: string, hostId: number): Promise<Array<HistoryEvent>> => {
+    const rawHistory = await manager.get<Array<rawHistoryGet>>(HOST_HISTORY_GLOBAL(hostId), { Authorization: `Bearer ${token}` });
+    const history: Array<HistoryEvent> = [];
+    for (const event of rawHistory) {
+        history.push(new HistoryEvent(
+            event.id,
+            new Date(event.date),
+            event.detail,
+            (event.credit ?? 0) - (event.debit ?? 0)
+        ));
+    }
+
+    return history;
+};
+
+export const getHistoryEvent = async (token: string, hostId: number, eventId: number): Promise<HistoryEvent> => {
+    const rawHistory = await manager.get<rawHistoryGet>(HOST_HISTORY_SPECIFIC(hostId, eventId), { Authorization: `Bearer ${token}` });
+    return new HistoryEvent(
+        rawHistory.id,
+        new Date(rawHistory.date),
+        rawHistory.detail,
+        (rawHistory.credit ?? 0) - (rawHistory.debit ?? 0)
     );
 };

@@ -2,8 +2,15 @@ import { Establishment } from "./Establishment";
 import { Host } from "./Host";
 import { Balance } from "./Balance";
 import { Payment } from "./Payment";
+import { HistoryEvent } from "./HistoryEvent";
 import { AuthCredentials } from "../types/authentication";
-import { getBalances, getHost, initPayment } from "../routes/Host";
+import {
+    getBalances,
+    getHistory,
+    getHistoryEvent,
+    getHost,
+    initPayment
+} from "../routes/Host";
 import { getEstablishment, searchEstablishments } from "../routes/Establishment";
 import { authenticateWithCredentials } from "../utils/authenticate";
 import { getPayment } from "../routes/Payment";
@@ -49,6 +56,20 @@ export class Client {
         return getEstablishment(this.credentials.token, etabId);
     }
 
+    /** This method is used to get the history of the client.
+     */
+    async getHistory(): Promise<Array<HistoryEvent>> {
+        await this.refreshBearerToken();
+        return getHistory(this.credentials.token, this.credentials.hostId);
+    }
+
+    /** This method is used to get a specific history event.
+     * @param eventId The event ID
+     */
+    async getHistoryEvent(eventId: number): Promise<HistoryEvent> {
+        await this.refreshBearerToken();
+        return getHistoryEvent(this.credentials.token, this.credentials.hostId, eventId);
+    }
     /** This method is used to get the host of the client.
      */
     async getHost(): Promise<Host> {
@@ -81,6 +102,4 @@ export class Client {
         await this.refreshBearerToken();
         return searchEstablishments(query, code, limit, minimalist, this.credentials.token);
     }
-
-
 }

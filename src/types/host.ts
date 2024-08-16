@@ -82,3 +82,11 @@ export interface rawPaymentInitResult {
     redirectURL: string;
     _rawResponse: string;
 }
+
+export interface rawHistoryGet {
+    id: number;
+    date: string;
+    detail: string;
+    debit: number | null;
+    credit: number | null;
+}
