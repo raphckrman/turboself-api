@@ -23,6 +23,8 @@ export class Establishment {
         public logoUrl: string | null,
         /** UAI (Unité Administrative Immatriculée) code, unique to each establishment */
         public uai: string | null,
+        /** Server MAC Adress */
+        public macAddress: string | null,
         /** Digital space greeting */
         public motd: string,
         /** Minimum number of meals to credit the Self account */
