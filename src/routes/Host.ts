@@ -3,17 +3,30 @@ import {
     HOST,
     HOST_BALANCE,
     HOST_BOOK_EVENING,
+    HOST_BOOK_MEAL,
     HOST_HISTORY_GLOBAL,
     HOST_HISTORY_SPECIFIC,
     HOST_INIT_PAYMENT,
-    HOST_PAYMENTS_LATEST
+    HOST_PAYMENTS_LATEST,
+    HOST_RESERVATIONS
 } from "../rest/endpoints";
 import { Host } from "../structures/Host";
-import { rawHistoryGet, rawHostBalanceResult, rawHostResult, rawPaymentInitResult } from "../types/host";
+import {
+    rawBookingResult,
+    rawBookResult,
+    rawHistoryGet,
+    rawHostBalanceResult,
+    rawHostResult,
+    rawPaymentInitResult
+} from "../types/host";
 import { Balance } from "../structures/Balance";
 import { Payment } from "../structures/Payment";
 import { HistoryEvent } from "../structures/HistoryEvent";
 import { rawPaymentResult } from "../types/payment";
+import { Booking } from "../structures/Booking";
+import { Terminal } from "../structures/Terminal";
+import { BookingDay } from "../structures/BookingDay";
+import { getWeekRange } from "../utils/weekRange";
 
 const manager = new RestManager("https://api-rest-prod.incb.fr/api");
 
@@ -128,7 +141,74 @@ export const getLastPayment = async (token: string, hostId: number): Promise<Pay
     );
 };
 
-export const canBookEvening = async (token: string, hostId: number): Promise<boolean> => {
-    const rawCanBookEvening = await manager.get<boolean>(HOST_BOOK_EVENING(hostId), { Authorization: `Bearer ${token}` });
-    return rawCanBookEvening;
+export const canBookEvening = async (token: string, hostId: number): Promise<boolean> => manager.get<boolean>(HOST_BOOK_EVENING(hostId), { Authorization: `Bearer ${token}` });
+
+export const getBookings = async (token: string, hostId: number, week?: number): Promise<Booking> => {
+    const rawBooking = await manager.get<rawBookingResult>(HOST_RESERVATIONS(hostId, week), { Authorization: `Bearer ${token}` });
+    if (!rawBooking.rsvWebDto[0]) {
+        throw new Error("No booking found for this week.");
+    }
+    const weekRange = getWeekRange(rawBooking.rsvWebDto[0].semaine, rawBooking.rsvWebDto[0].annee);
+    const days = [];
+    for (const rawDay of rawBooking.rsvWebDto[0].jours) {
+        days.push(new BookingDay(
+            token,
+            hostId,
+            rawBooking.rsvWebDto[0].id,
+            rawDay.dayReserv > 0,
+            rawDay.autorise,
+            rawDay.dayOfWeek,
+            rawDay.msg || "",
+            rawDay.dayReserv,
+            new Date(weekRange.from.getTime() + (rawDay.dayOfWeek - 1) * 86400000)
+        ));
+    }
+    return new Booking(
+        rawBooking.rsvWebDto[0].id,
+        rawBooking.rsvWebDto[0].semaine,
+        rawBooking.rsvWebDto[0].hote.id,
+        weekRange.from,
+        weekRange.to,
+        new Terminal(
+            rawBooking.rsvWebDto[0].borne.id,
+            rawBooking.rsvWebDto[0].borne.idOrig,
+            rawBooking.rsvWebDto[0].borne.code2p5,
+            rawBooking.rsvWebDto[0].borne.lib,
+            rawBooking.rsvWebDto[0].borne.prix.map(price => ({
+                id:      price.id,
+                localId: price.idOrig,
+                name:    price.lib,
+                price:   price.prix
+            }))
+        ),
+        days,
+        rawBooking.isResaSoirActive
+    );
+};
+
+export const bookMeal = async (token: string, hostId: number, bookId: string, day: number, reservations = 1, bookEvening = false): Promise<BookingDay> => {
+    const rawBook = await manager.put<rawBookResult>(HOST_BOOK_MEAL(hostId), {
+        dayOfWeek: day,
+        dayReserv: reservations,
+        web:       {
+            id: bookId
+        },
+        hasHoteResaSoirActive: bookEvening
+    }, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    return new BookingDay(
+        token,
+        hostId,
+        rawBook.id,
+        rawBook.dayReserv > 0,
+        true,
+        rawBook.dayOfWeek,
+        rawBook.msg || "",
+        rawBook.dayReserv,
+        new Date()
+    );
 };

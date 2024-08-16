@@ -3,10 +3,14 @@ import { Host } from "./Host";
 import { Balance } from "./Balance";
 import { Payment } from "./Payment";
 import { HistoryEvent } from "./HistoryEvent";
+import { Booking } from "./Booking";
+import { BookingDay } from "./BookingDay";
 import { AuthCredentials } from "../types/authentication";
 import {
+    bookMeal,
     canBookEvening,
     getBalances,
+    getBookings,
     getHistory,
     getHistoryEvent,
     getHost,
@@ -24,19 +28,16 @@ export class Client {
         public host?: Host,
         public balances?: Array<Balance>
     ) {}
-    private async refreshBearerToken(): Promise<boolean> {
-        if (this.credentials.token_expiry > Date.now()) {
-            return false;
-        }
-
-        if (!this.credentials.password || !this.credentials.username) {
-            throw new Error("You need to provide a username and password to refresh the bearer token.");
-        }
-        const client = await authenticateWithCredentials(this.credentials.username, this.credentials.password, true, false);
-        this.credentials = client.credentials;
-        return true;
+    /** This method is used to book a meal.
+     * @param bookId The booking ID
+     * @param day The day
+     * @param reservations The number of reservations
+     * @param bookEvening Whether to book the evening
+     */
+    async bookMeal(bookId: string, day: number, reservations?: number, bookEvening?: boolean): Promise<BookingDay> {
+        await this.refreshBearerToken();
+        return bookMeal(this.credentials.token, this.credentials.hostId, bookId, day, reservations, bookEvening);
     }
-
     /** This method is used to check if the client can book an evening.
      */
     async canBookEvening(): Promise<boolean> {
@@ -48,6 +49,10 @@ export class Client {
     async getBalances(): Promise<Array<Balance>> {
         await this.refreshBearerToken();
         return getBalances(this.credentials.token, this.credentials.hostId);
+    }
+    async getBooking(week?: number): Promise<Booking> {
+        await this.refreshBearerToken();
+        return getBookings(this.credentials.token, this.credentials.hostId, week);
     }
     /** This method is used to get the establishment of the client.
      * @param establishmentId The establishment ID to get. If not provided, the establishment of the host will be returned.
@@ -63,14 +68,12 @@ export class Client {
         }
         return getEstablishment(this.credentials.token, etabId);
     }
-
     /** This method is used to get the history of the client.
      */
     async getHistory(): Promise<Array<HistoryEvent>> {
         await this.refreshBearerToken();
         return getHistory(this.credentials.token, this.credentials.hostId);
     }
-
     /** This method is used to get a specific history event.
      * @param eventId The event ID
      */
@@ -84,8 +87,6 @@ export class Client {
         await this.refreshBearerToken();
         return getHost(this.credentials.token, this.credentials.hostId);
     }
-
-
     /** This method is used to get the last payment of the client.
      */
     async getLastPayment(): Promise<Payment> {
@@ -106,6 +107,19 @@ export class Client {
         await this.refreshBearerToken();
         return initPayment(this.credentials.token, this.credentials.hostId, amount);
     }
+    async refreshBearerToken(force = false): Promise<boolean> {
+        if (!force && this.credentials.token_expiry > Date.now()) {
+            return false;
+        }
+        if (!this.credentials.password || !this.credentials.username) {
+            throw new Error("You need to provide a username and password to refresh the bearer token.");
+        }
+        const client = await authenticateWithCredentials(this.credentials.username, this.credentials.password, true, false);
+        this.credentials = client.credentials;
+        return true;
+    }
+
+
     /** This method is used to search for establishments.
      * @param query The query to search for.
      * @param code The establishment code to search for.
@@ -116,4 +130,6 @@ export class Client {
         await this.refreshBearerToken();
         return searchEstablishments(query, code, limit, minimalist, this.credentials.token);
     }
+
+
 }
