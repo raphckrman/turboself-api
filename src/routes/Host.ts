@@ -2,6 +2,7 @@ import { RestManager } from "../rest/RESTManager";
 import {
     HOST,
     HOST_BALANCE,
+    HOST_BOOK_EVENING,
     HOST_HISTORY_GLOBAL,
     HOST_HISTORY_SPECIFIC,
     HOST_INIT_PAYMENT,
@@ -125,4 +126,9 @@ export const getLastPayment = async (token: string, hostId: number): Promise<Pay
         "https://espacenumerique.turbo-self.com/PagePaiementValide.aspx?token=" + rawPayment.token,
         new Date(rawPayment.date)
     );
+};
+
+export const canBookEvening = async (token: string, hostId: number): Promise<boolean> => {
+    const rawCanBookEvening = await manager.get<boolean>(HOST_BOOK_EVENING(hostId), { Authorization: `Bearer ${token}` });
+    return rawCanBookEvening;
 };

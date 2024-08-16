@@ -5,6 +5,7 @@ import { Payment } from "./Payment";
 import { HistoryEvent } from "./HistoryEvent";
 import { AuthCredentials } from "../types/authentication";
 import {
+    canBookEvening,
     getBalances,
     getHistory,
     getHistoryEvent,
@@ -36,6 +37,12 @@ export class Client {
         return true;
     }
 
+    /** This method is used to check if the client can book an evening.
+     */
+    async canBookEvening(): Promise<boolean> {
+        await this.refreshBearerToken();
+        return canBookEvening(this.credentials.token, this.credentials.hostId);
+    }
     /** This method is used to get the balances of the client.
      */
     async getBalances(): Promise<Array<Balance>> {
@@ -77,6 +84,7 @@ export class Client {
         await this.refreshBearerToken();
         return getHost(this.credentials.token, this.credentials.hostId);
     }
+
 
     /** This method is used to get the last payment of the client.
      */
