@@ -1,4 +1,5 @@
 import { rawEstablishmentResult } from "./establishment";
+import { rawTerminalResult } from "./terminal";
 
 export interface rawHostResult {
     /** Internal identifier of the host on the digital space */
@@ -94,4 +95,55 @@ export interface rawHistoryGet {
     debit: number | null;
     /** Credit amount */
     credit: number | null;
+}
+
+export interface rawBookingResult {
+    rsvWebDto: Array<RsvWebWeekDto>;
+    numSemaines: Array<number>;
+    isResaSoirActive: boolean;
+    dateSemaine: string;
+}
+
+export interface RsvWebWeekDto {
+    id: string;
+    hote: {
+        id: number;
+    };
+    annee: number;
+    semaine: number;
+    borne: rawTerminalResult;
+    joursAutorises: number;
+    jours: Array<rawBookingDay>;
+    usage: number;
+}
+
+export interface rawBookingDay {
+    dayReserv: number;
+    reservDernSynchro: number;
+    dayOfWeek: number;
+    web: {
+        id: string;
+    };
+    autorise: boolean;
+    msg?: string;
+    dayLabel: string;
+}
+
+export interface rawBookResult {
+    dayReserv: number;
+    reservHorsKiosk: number;
+    reservDernSynchro: number;
+    web: {
+        id: string;
+        annee: number;
+        semaine: number;
+        borneId: number;
+        joursAutorises: number;
+        usage: number;
+        hote: rawHostResult;
+    };
+    rsvwebid: string;
+    dayOfWeek: number;
+    msg: string;
+    id: string;
 }
