@@ -8,7 +8,8 @@ import {
     HOST_HISTORY_SPECIFIC,
     HOST_INIT_PAYMENT,
     HOST_PAYMENTS_LATEST,
-    HOST_RESERVATIONS
+    HOST_RESERVATIONS,
+    HOST_SIBLINGS
 } from "../rest/endpoints";
 import { Host } from "../structures/Host";
 import {
@@ -211,4 +212,36 @@ export const bookMeal = async (token: string, hostId: number, bookId: string, da
         rawBook.dayReserv,
         new Date()
     );
+};
+
+export const getHostSiblings = async (token: string, hostId: number): Promise<Array<Host>> => {
+    const rawSiblings = await manager.get<Array<rawHostResult>>(HOST_SIBLINGS(hostId), { Authorization: `Bearer ${token}` });
+    const siblings: Array<Host> = [];
+    console.log(HOST_SIBLINGS(hostId));
+    console.log(rawSiblings);
+    for (const rawSibling of rawSiblings) {
+        siblings.push(new Host(
+            rawSibling.id,
+            rawSibling.idOrig,
+            rawSibling.etab.id,
+            rawSibling.prenom,
+            rawSibling.nom,
+            rawSibling.mode,
+            rawSibling.qualite,
+            rawSibling.division,
+            rawSibling.prixDej,
+            rawSibling.type,
+            rawSibling.carteCodee,
+            rawSibling.urlCafeteria || null,
+            {
+                payment:                 rawSibling.droitPaiement || false,
+                reservation:             rawSibling.droitReservation || false,
+                cafeteria:               rawSibling.droitCafeteria || false,
+                bookWithNegativeBalance: rawSibling.autoriseReservSoldeIns,
+                maxPassages:             rawSibling.nbMulti
+            }
+        ));
+    }
+
+    return siblings;
 };

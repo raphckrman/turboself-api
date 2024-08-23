@@ -14,6 +14,7 @@ import {
     getHistory,
     getHistoryEvent,
     getHost,
+    getHostSiblings,
     getLastPayment,
     initPayment
 } from "../routes/Host";
@@ -99,6 +100,13 @@ export class Client {
     async getPayment(paymentToken: string): Promise<Payment> {
         await this.refreshBearerToken();
         return getPayment(this.credentials.token, paymentToken);
+    }
+
+    /** This method is used to get siblings of the host
+     */
+    async getSiblings(): Promise<Array<Host>> {
+        await this.refreshBearerToken();
+        return getHostSiblings(this.credentials.token, this.credentials.hostId);
     }
     /** This method is used to initialize a payment.
      * @param amount The amount
