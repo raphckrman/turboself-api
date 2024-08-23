@@ -6,6 +6,8 @@ export class Payment {
         public hostId: number,
         /** Amount of the payment */
         public amount: number,
+        /** Status of the payment */
+        public status: string,
         /** Payment token */
         public token: string,
         /** URL of the payment page */

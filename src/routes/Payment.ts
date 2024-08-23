@@ -11,6 +11,7 @@ export const getPayment = async (token: string, paymentToken: string): Promise<P
         rawPaymentGet.id,
         rawPaymentGet.hote.id,
         rawPaymentGet.montant,
+        rawPaymentGet.statut,
         paymentToken,
         null,
         "https://espacenumerique.turbo-self.com/PagePaiementRefuse.aspx?token=" + paymentToken,
