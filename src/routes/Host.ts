@@ -217,8 +217,6 @@ export const bookMeal = async (token: string, hostId: number, bookId: string, da
 export const getHostSiblings = async (token: string, hostId: number): Promise<Array<Host>> => {
     const rawSiblings = await manager.get<Array<rawHostResult>>(HOST_SIBLINGS(hostId), { Authorization: `Bearer ${token}` });
     const siblings: Array<Host> = [];
-    console.log(HOST_SIBLINGS(hostId));
-    console.log(rawSiblings);
     for (const rawSibling of rawSiblings) {
         siblings.push(new Host(
             rawSibling.id,
