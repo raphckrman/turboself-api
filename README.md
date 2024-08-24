@@ -41,3 +41,4 @@ main();
 Thanks to the following people for their contributions to this project:
 - [Remy Godet](https://github.com/godetremy)
 - [Tom Theret](https://github.com/tom-theret)
+- [TouchGuild](https://github.com/DinographicPixels/TouchGuild/) for the ESLint rules
