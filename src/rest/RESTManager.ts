@@ -1,5 +1,4 @@
 /** @module RESTManager */
-import { request } from "undici";
 import { RequestOptions } from "../types/request-handler";
 
 export class RestManager {
@@ -12,7 +11,8 @@ export class RestManager {
   private async sendRequest<T>(options: RequestOptions): Promise<T> {
     const { method, path, body, headers } = options;
     const url = `${this.baseURL}/${path}`;
-    const response = await request(url, {
+
+    const response = await fetch(url, {
       method,
       body: body ? JSON.stringify(body) : undefined,
       headers: {
@@ -22,11 +22,12 @@ export class RestManager {
       }
     });
 
-    const responseData = await response.body.json();
-    if (!response.statusCode.toString().startsWith("2")) {
-      throw new Error(`${response.statusCode}: ${JSON.stringify(responseData)}`);
+    if (!response.ok) {
+      const responseData = await response.json();
+      throw new Error(`${response.status}: ${JSON.stringify(responseData)}`);
     }
 
+    const responseData = await response.json();
     return responseData as T;
   }
 
