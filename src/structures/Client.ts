@@ -21,6 +21,7 @@ import {
 import { getEstablishment, searchEstablishments } from "../routes/Establishment";
 import { authenticateWithCredentials } from "../utils/authenticate";
 import { getPayment } from "../routes/Payment";
+import { editPassword } from "../routes/Account";
 
 export class Client {
     constructor(
@@ -45,6 +46,17 @@ export class Client {
         await this.refreshBearerToken();
         return canBookEvening(this.credentials.token, this.credentials.hostId);
     }
+
+    /** This method is used to edit the password of the client.
+     * @param actualPassword The actual password
+     * @param password The new password
+     * @returns The token of the request
+     */
+    async editPassword(actualPassword: string, password: string): Promise<string> {
+        await this.refreshBearerToken();
+        return editPassword(this.credentials.userId, actualPassword, password, this.credentials.token);
+    }
+
     /** This method is used to get the balances of the client.
      */
     async getBalances(): Promise<Array<Balance>> {
@@ -138,6 +150,4 @@ export class Client {
         await this.refreshBearerToken();
         return searchEstablishments(query, code, limit, minimalist, this.credentials.token);
     }
-
-
 }

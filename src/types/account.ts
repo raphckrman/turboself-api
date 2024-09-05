@@ -16,3 +16,10 @@ export interface rawRequestPasswordResetResult {
     /** Message ID */
     messageId: string;
 }
+
+export interface rawPasswordChangeResult {
+    id: number;
+    email: string;
+    dateDernConn: string;
+    token: string;
+}

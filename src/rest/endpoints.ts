@@ -4,6 +4,7 @@ export const BASE_URL = () => "https://api-rest-prod.incb.fr/api";
 export const AUTH_LOGIN = () => "v1/auth/login";
 export const AUTH_SIGNUP = () => "v1/creation-comptes";
 export const AUTH_PASSWORD_RESET = (email: string) => `v1/utilisateurs/password?email=${email}`;
+export const AUTH_PASSWORD_CHANGE = () => "v1/utilisateurs/password";
 
 export const USER_BY_ID = (userId: number) => `v1/utilisateurs/${userId}`;
 export const USER_BY_HOTE = (hostId: number) => `v1/utilisateurs/hotes/${hostId}`;
