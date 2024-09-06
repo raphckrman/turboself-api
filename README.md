@@ -10,11 +10,6 @@ A powerful and user-friendly wrapper for interacting with the TurboSelf API.
 > [!warning]
 > This project is not affiliated with TurboSelf or INCB in any way.
 
-## ❓ Why choose turboself-api?
-| turboself-api@2.0.0 | turboself-api@1.2.7 | turbawself@1.0.1 | 
-| ------------------- | ------------------- | ---------------- |
-|                     |                     |                  |   
-
 ## 🚀 What's New in v2.0
 - **Complete Code Refactoring**: Improved project structure for better maintainability and performance.
 - **New Endpoints**: Added new endpoints to provide more comprehensive coverage of TurboSelf API functionalities.
