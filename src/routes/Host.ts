@@ -28,33 +28,14 @@ import { Booking } from "../structures/Booking";
 import { Terminal } from "../structures/Terminal";
 import { BookingDay } from "../structures/BookingDay";
 import { getWeekRange } from "../utils/weekRange";
+import { transformToHost } from "../utils/transformers";
 
 const manager = new RestManager("https://api-rest-prod.incb.fr/api");
 
 export const getHost = async (token: string, hostId: number): Promise<Host> => {
     const rawHostGet = await manager.get<rawHostResult>(HOST(hostId), { Authorization: `Bearer ${token}` });
 
-    return new Host(
-        rawHostGet.id,
-        rawHostGet.idOrig,
-        rawHostGet.etab.id,
-        rawHostGet.prenom,
-        rawHostGet.nom,
-        rawHostGet.mode,
-        rawHostGet.qualite,
-        rawHostGet.division,
-        rawHostGet.prixDej,
-        rawHostGet.type,
-        rawHostGet.carteCodee,
-        rawHostGet.urlCafeteria || null,
-        {
-            payment:                 rawHostGet.droitPaiement || false,
-            reservation:             rawHostGet.droitReservation || false,
-            cafeteria:               rawHostGet.droitCafeteria || false,
-            bookWithNegativeBalance: rawHostGet.autoriseReservSoldeIns,
-            maxPassages:             rawHostGet.nbMulti
-        }
-    );
+    return transformToHost(rawHostGet);
 };
 
 export const getBalances = async (token: string, hostId: number): Promise<Array<Balance>> => {
@@ -226,27 +207,7 @@ export const getHostSiblings = async (token: string, hostId: number): Promise<Ar
     const rawSiblings = await manager.get<Array<rawHostResult>>(HOST_SIBLINGS(hostId), { Authorization: `Bearer ${token}` });
     const siblings: Array<Host> = [];
     for (const rawSibling of rawSiblings) {
-        siblings.push(new Host(
-            rawSibling.id,
-            rawSibling.idOrig,
-            rawSibling.etab.id,
-            rawSibling.prenom,
-            rawSibling.nom,
-            rawSibling.mode,
-            rawSibling.qualite,
-            rawSibling.division,
-            rawSibling.prixDej,
-            rawSibling.type,
-            rawSibling.carteCodee,
-            rawSibling.urlCafeteria || null,
-            {
-                payment:                 rawSibling.droitPaiement || false,
-                reservation:             rawSibling.droitReservation || false,
-                cafeteria:               rawSibling.droitCafeteria || false,
-                bookWithNegativeBalance: rawSibling.autoriseReservSoldeIns,
-                maxPassages:             rawSibling.nbMulti
-            }
-        ));
+        siblings.push(transformToHost(rawSibling));
     }
 
     return siblings;

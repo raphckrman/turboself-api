@@ -1,5 +1,7 @@
 import { Establishment } from "../structures/Establishment";
+import { Host } from "../structures/Host";
 import { rawEstablishmentResult, rawEstablishmentSearchResult } from "../types/establishment";
+import { rawHostResult } from "../types/host";
 
 function isRawEstablishmentResult(establishment: rawEstablishmentResult | rawEstablishmentSearchResult): establishment is rawEstablishmentResult {
     return (establishment as rawEstablishmentResult).id !== undefined;
@@ -88,6 +90,30 @@ export function transformToEstablishment(establishment: rawEstablishmentResult |
         }) : {
             firstSync: new Date(0),
             lastSync:  new Date(0)
+        }
+    );
+}
+
+export function transformToHost(host: rawHostResult): Host {
+    return new Host(
+        host.id,
+        host.idOrig,
+        host.etab.id,
+        host.prenom,
+        host.nom,
+        host.mode,
+        host.qualite,
+        host.division,
+        host.prixDej,
+        host.type,
+        host.carteCodee,
+        host.urlCafeteria || null,
+        {
+            payment:                 host.droitPaiement || false,
+            reservation:             host.droitReservation || false,
+            cafeteria:               host.droitCafeteria || false,
+            bookWithNegativeBalance: host.autoriseReservSoldeIns,
+            maxPassages:             host.nbMulti
         }
     );
 }
