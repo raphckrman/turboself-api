@@ -68,6 +68,7 @@ export const getBalances = async (token: string, hostId: number): Promise<Array<
         }
         balances.push(new Balance(
             balance.id,
+            balance.hote.id,
             balance.montant,
             balance.montantEstime,
             date
