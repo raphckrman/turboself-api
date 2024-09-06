@@ -16,7 +16,7 @@ export class Establishment {
         /** Name of establishment (max length: 50) */
         public name: string,
         /** Currency symbol */
-        public currencySymbol: string,
+        public currencySymbol: string | null,
         /** 2p5 code */
         public code: string | null,
         /** URL of the establishment logo */
@@ -28,13 +28,13 @@ export class Establishment {
         /** Digital space greeting */
         public motd: string,
         /** Minimum number of meals to credit the Self account */
-        public minMealsToCredit: number,
+        public minMealsToCredit: number | null,
         /** Minimum debt to credit the Forfait account */
-        public minDebtToCredit: number,
+        public minDebtToCredit: number | null,
         /** Minimum amount to credit the Self account */
-        public minAmountToCredit: number,
+        public minAmountToCredit: number | null,
         /** If the establishment is disabled */
-        public disabled: boolean,
+        public disabled: boolean | null,
         public closures: Array<Closure>,
         public location: Location,
         public contact: Contact,

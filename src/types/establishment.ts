@@ -1,33 +1,33 @@
 export interface Location {
     /** City of the establishment */
-    city: string;
+    city: string | null;
     /** Address of the establishment */
-    address: string;
+    address: string | null;
     /** Postcode of the establishment */
-    postcode: string;
+    postcode: string | null;
 }
 
 export interface Permissions {
     /** Maximum number of reservations per service for students in money mode */
-    maxReservationsStudentMoney: number;
+    maxReservationsStudentMoney: number | null;
     /** Maximum number of reservations per service for students in package mode */
-    maxReservationsStudentPackage: number;
+    maxReservationsStudentPackage: number | null;
     /** Maximum number of reservations per service for commensals in money mode */
-    maxReservationsCommensalMoney: number;
+    maxReservationsCommensalMoney: number | null;
     /** Maximum number of reservations per service for commensals in package mode */
-    maxReservationsCommensalPackage: number;
+    maxReservationsCommensalPackage: number | null;
     /** Maximum number of reservations per service for trainees in money mode */
-    maxReservationsTraineeMoney: number;
+    maxReservationsTraineeMoney: number | null;
     /** Maximum number of reservations per service for trainees in package mode */
-    maxReservationsTraineePackage: number;
+    maxReservationsTraineePackage: number | null;
     /** Right for the QR Code for students */
-    qrCodeStudent: boolean;
+    qrCodeStudent: boolean | null;
     /** Right for the QR Code for commensals */
-    qrCodeCommensal: boolean;
+    qrCodeCommensal: boolean | null;
     /** Right for the QR Code for trainees */
-    qrCodeTrainee: boolean;
+    qrCodeTrainee: boolean | null;
     /** Should we hide student history on the home page? */
-    hideHistory: boolean;
+    hideHistory: boolean | null;
 }
 
 export interface Contact {
