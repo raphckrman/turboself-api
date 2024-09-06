@@ -8,6 +8,10 @@ export * from "./structures/Establishment";
 export * from "./structures/Host";
 export * from "./structures/Balance";
 export * from "./structures/Payment";
+export * from "./structures/Booking";
+export * from "./structures/BookingDay";
+export * from "./structures/HistoryEvent";
+export * from "./structures/Terminal";
 
 export * from "./types/account";
 export * from "./types/authentication";

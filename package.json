@@ -60,9 +60,5 @@
     "tsup": "^8.2.4",
     "tsx": "^4.7.0",
     "typescript": "^5.5.4"
-  },
-  "dependencies": {
-    "tslib": "^2.6.3",
-    "undici": "^6.18.2"
   }
 }
