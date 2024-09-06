@@ -18,6 +18,7 @@ export function transformToEstablishment(establishment: rawEstablishmentResult |
         isRawEstablishmentResult(establishment) ? (establishment.configuration?.nbRepasMini || 0) : 0,
         isRawEstablishmentResult(establishment) ? (establishment.configuration?.creanceMini || 0) : 0,
         isRawEstablishmentResult(establishment) ? (establishment.configuration?.montantCreditMini || 0) : 0,
+        isRawEstablishmentResult(establishment) ? (establishment.desactive || false) : false,
         isRawEstablishmentResult(establishment) ? (establishment.configuration?.fermetures?.map(closure => ({
             id:      closure.id,
             canBook: !closure.rsv,

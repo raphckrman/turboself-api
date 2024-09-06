@@ -33,6 +33,8 @@ export class Establishment {
         public minDebtToCredit: number,
         /** Minimum amount to credit the Self account */
         public minAmountToCredit: number,
+        /** If the establishment is disabled */
+        public disabled: boolean,
         public closures: Array<Closure>,
         public location: Location,
         public contact: Contact,
