@@ -147,47 +147,52 @@ export const getLastPayment = async (token: string, hostId: number): Promise<Pay
 
 export const canBookEvening = async (token: string, hostId: number): Promise<boolean> => manager.get<boolean>(HOST_BOOK_EVENING(hostId), { Authorization: `Bearer ${token}` });
 
-export const getBookings = async (token: string, hostId: number, week?: number): Promise<Booking> => {
+export const getBookings = async (token: string, hostId: number, week?: number): Promise<Array<Booking>> => {
     const rawBooking = await manager.get<rawBookingResult>(HOST_RESERVATIONS(hostId, week), { Authorization: `Bearer ${token}` });
     if (!rawBooking.rsvWebDto[0]) {
         throw new Error("No booking found for this week.");
     }
     const weekRange = getWeekRange(rawBooking.rsvWebDto[0].semaine, rawBooking.rsvWebDto[0].annee);
+    const bookings = [];
     const days = [];
-    for (const rawDay of rawBooking.rsvWebDto[0].jours) {
-        days.push(new BookingDay(
-            token,
-            hostId,
-            rawBooking.rsvWebDto[0].id,
-            rawDay.dayReserv > 0,
-            rawDay.autorise,
-            rawDay.dayOfWeek,
-            rawDay.msg || "",
-            rawDay.dayReserv,
-            new Date(weekRange.from.getTime() + (rawDay.dayOfWeek - 1) * 86400000)
+    for (const rawBookingDto of rawBooking.rsvWebDto) {
+        for (const rawDay of rawBookingDto.jours) {
+            days.push(new BookingDay(
+                token,
+                hostId,
+                rawBookingDto.id,
+                rawDay.dayReserv > 0,
+                rawDay.autorise,
+                rawDay.dayOfWeek,
+                rawDay.msg || "",
+                rawDay.dayReserv,
+                new Date(weekRange.from.getTime() + (rawDay.dayOfWeek - 1) * 86400000)
+            ));
+        }
+
+        bookings.push(new Booking(
+            rawBookingDto.id,
+            rawBookingDto.semaine,
+            rawBookingDto.hote.id,
+            weekRange.from,
+            weekRange.to,
+            new Terminal(
+                rawBookingDto.borne.id,
+                rawBookingDto.borne.idOrig,
+                rawBookingDto.borne.code2p5,
+                rawBookingDto.borne.lib,
+                rawBookingDto.borne.prix.map(price => ({
+                    id:      price.id,
+                    localId: price.idOrig,
+                    name:    price.lib,
+                    price:   price.prix
+                }))
+            ),
+            days
         ));
     }
-    return new Booking(
-        rawBooking.rsvWebDto[0].id,
-        rawBooking.rsvWebDto[0].semaine,
-        rawBooking.rsvWebDto[0].hote.id,
-        weekRange.from,
-        weekRange.to,
-        new Terminal(
-            rawBooking.rsvWebDto[0].borne.id,
-            rawBooking.rsvWebDto[0].borne.idOrig,
-            rawBooking.rsvWebDto[0].borne.code2p5,
-            rawBooking.rsvWebDto[0].borne.lib,
-            rawBooking.rsvWebDto[0].borne.prix.map(price => ({
-                id:      price.id,
-                localId: price.idOrig,
-                name:    price.lib,
-                price:   price.prix
-            }))
-        ),
-        days,
-        rawBooking.isResaSoirActive
-    );
+
+    return bookings;
 };
 
 export const bookMeal = async (token: string, hostId: number, bookId: string, day: number, reservations = 1, bookEvening = false): Promise<BookingDay> => {

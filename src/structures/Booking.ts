@@ -16,8 +16,6 @@ export class Booking {
         /** Terminal information */
         public terminal: Terminal,
         /** Days of the week available to book */
-        public days: Array<BookingDay>,
-        /** Whether the evening can be booked */
-        public canBookEvening: boolean
+        public days: Array<BookingDay>
     ) {}
 }
