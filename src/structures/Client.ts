@@ -63,7 +63,7 @@ export class Client {
         await this.refreshBearerToken();
         return getBalances(this.credentials.token, this.credentials.hostId);
     }
-    async getBooking(week?: number): Promise<Booking> {
+    async getBookings(week?: number): Promise<Array<Booking>> {
         await this.refreshBearerToken();
         return getBookings(this.credentials.token, this.credentials.hostId, week);
     }
