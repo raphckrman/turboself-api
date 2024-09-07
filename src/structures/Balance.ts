@@ -4,6 +4,8 @@ export class Balance {
         public id: number,
         /** Internal identifier of the host */
         public hostId: number,
+        /** Label of the balance */
+        public label: string,
         /** Amount of the balance */
         public amount: number,
         /** Estimated host account balance (taking into account future reservations and OK payments) */
