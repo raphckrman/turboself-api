@@ -47,7 +47,7 @@ export const authenticateWithCredentials = async (
     password: string,
     remember = true,
     minimalist = false,
-    hoteId?: number,
+    hoteId?: number
 ): Promise<Client> => {
     const data = await manager.post<rawAuthResult>(AUTH_LOGIN(), {
         username,

@@ -21,13 +21,7 @@ export class BookingDay {
         public date: Date
     ) {}
 
-    async book(reservations?: number, bookEvening?: boolean): Promise<BookingDay> {
-        if (!reservations) {
-            reservations = !this.booked ? 1 : 0;
-        }
-        if (bookEvening === undefined) {
-            bookEvening = false;
-        }
+    async book(reservations = 1, bookEvening = false): Promise<BookingDay> {
         this.booked = reservations > 0;
         return bookMeal(this.token, this.hostId, this.id, this.date.getDay(), reservations, bookEvening);
     }
