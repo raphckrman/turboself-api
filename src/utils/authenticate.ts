@@ -11,11 +11,13 @@ export const authenticateWithCredentials = async (
     username: string,
     password: string,
     remember = true,
-    minimalist = false
+    minimalist = false,
+    hoteId?: number,
 ): Promise<Client> => {
     const data = await manager.post<rawAuthResult>(AUTH_LOGIN(), {
         username,
-        password
+        password,
+        hoteId
     });
 
     if (minimalist) {
