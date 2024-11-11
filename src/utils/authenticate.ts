@@ -7,19 +7,13 @@ import { rawAuthResult } from "../types/authentication";
 
 const manager = new RestManager("https://api-rest-prod.incb.fr/api");
 
-export const authenticateWithCredentials = async (
-    username: string,
-    password: string,
-    remember = true,
-    minimalist = false,
-    hoteId?: number,
+const createClient = async (
+    data: rawAuthResult,
+    remember: boolean,
+    username: string | null,
+    password: string | null,
+    minimalist: boolean
 ): Promise<Client> => {
-    const data = await manager.post<rawAuthResult>(AUTH_LOGIN(), {
-        username,
-        password,
-        hoteId
-    });
-
     if (minimalist) {
         return new Client({
             token:        data.access_token,
@@ -48,6 +42,22 @@ export const authenticateWithCredentials = async (
     }, establishment, host, balance);
 };
 
+export const authenticateWithCredentials = async (
+    username: string,
+    password: string,
+    remember = true,
+    minimalist = false,
+    hoteId?: number,
+): Promise<Client> => {
+    const data = await manager.post<rawAuthResult>(AUTH_LOGIN(), {
+        username,
+        password,
+        hoteId
+    });
+
+    return createClient(data, remember, username, password, minimalist);
+};
+
 export const authenticateWithTicket = async (
     ent: "PRONOTE" | string,
     ticket: string,
@@ -55,7 +65,6 @@ export const authenticateWithTicket = async (
     minimalist = false
 ): Promise<Client> => {
     const response = await fetch(`https://espacenumerique.turbo-self.com/Connexion.aspx?ent=${ent}&ticket=${ticket}`);
-
     const cookies = response.headers.get("set-cookie");
     const username: string = cookies?.split(";")[0].split("=")[1] ?? "";
     const password: string = cookies?.split(";")[0].split("=")[1] ?? "";
@@ -65,30 +74,5 @@ export const authenticateWithTicket = async (
         password
     });
 
-    if (minimalist) {
-        return new Client({
-            token:        data.access_token,
-            hostId:       data.hoteId,
-            userId:       data.userId,
-            username:     remember ? username : null,
-            password:     remember ? password : null,
-            token_expiry: Date.now() + 3300000
-        });
-    }
-
-    const host = await getHost(data.access_token, data.hoteId);
-
-    const [balance, establishment] = await Promise.all([
-        getBalances(data.access_token, data.hoteId),
-        getEstablishment(data.access_token, host.etabId)
-    ]);
-
-    return new Client({
-        token:        data.access_token,
-        hostId:       data.hoteId,
-        userId:       data.userId,
-        username:     remember ? username : null,
-        password:     remember ? password : null,
-        token_expiry: Date.now() + 3300000
-    }, establishment, host, balance);
+    return createClient(data, remember, username, password, minimalist);
 };
