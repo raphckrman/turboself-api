@@ -2,13 +2,17 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: ["src/index.ts"],
-  format: ["cjs", "esm"],
-  dts: true,
-  sourcemap: true,
-  clean: true,
-  minify: true,
+
   outDir: "dist",
+  format: ["cjs", "esm"],
+
+  treeshake: true,
   splitting: false,
+
+  sourcemap: true,
+  minify: "terser",
+  clean: true,
+  dts: true,
   esbuildOptions(options) {
     options.keepNames = true;
   }
