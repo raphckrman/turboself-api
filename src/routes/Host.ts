@@ -178,7 +178,7 @@ export const getBookings = async (token: string, hostId: number, week?: number):
 };
 
 export const bookMeal = async (token: string, hostId: number, bookId: string, day: number, reservations = 1, bookEvening = false): Promise<BookingDay> => {
-    const rawBook = await manager.put<rawBookResult>(HOST_BOOK_MEAL(hostId), {
+    const rawBook = await manager.post<rawBookResult>(HOST_BOOK_MEAL(hostId), {
         dayOfWeek: day,
         dayReserv: reservations,
         web:       {
