@@ -42,7 +42,9 @@ export const getBalances = async (token: string, hostId: number): Promise<Array<
     const rawBalanceGet = await manager.get<Array<rawHostBalanceResult>>(HOST_BALANCE(hostId), { Authorization: `Bearer ${token}` });
     const balances: Array<Balance> = [];
     for (const balance of rawBalanceGet) {
-        const dateString = balance.montantEstimeMsg.match(/(\d{2})\/(\d{2})\/(\d{4})/)?.slice(1, 4);
+        const dateString = balance.montantEstimeMsg
+            ? balance.montantEstimeMsg.match(/(\d{2})\/(\d{2})\/(\d{4})/)?.slice(1, 4)
+            : undefined;
         let date = new Date();
         if (dateString) {
             date = new Date(parseInt(dateString[2], 10), parseInt(dateString[1], 10) - 1, parseInt(dateString[0], 10));
