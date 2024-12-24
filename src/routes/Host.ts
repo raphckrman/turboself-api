@@ -136,8 +136,9 @@ export const getBookings = async (token: string, hostId: number, week?: number):
     }
     const weekRange = getWeekRange(rawBooking.rsvWebDto[0].semaine, rawBooking.rsvWebDto[0].annee);
     const bookings = [];
-    const days = [];
     for (const rawBookingDto of rawBooking.rsvWebDto) {
+        const days = [];
+
         for (const rawDay of rawBookingDto.jours) {
             days.push(new BookingDay(
                 token,
