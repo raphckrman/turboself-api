@@ -6,6 +6,7 @@ import {
     HOST_BOOK_MEAL,
     HOST_HISTORY_GLOBAL,
     HOST_HISTORY_SPECIFIC,
+    HOST_HOME,
     HOST_INIT_PAYMENT,
     HOST_PAYMENTS_LATEST,
     HOST_RESERVATIONS,
@@ -17,13 +18,13 @@ import {
     rawBookResult,
     rawHistoryGet,
     rawHostBalanceResult,
+    rawHostHomeResult,
     rawHostResult,
     rawPaymentInitResult
 } from "../types/host";
 import { Balance } from "../structures/Balance";
 import { Payment } from "../structures/Payment";
 import { HistoryEvent } from "../structures/HistoryEvent";
-import { rawPaymentResult } from "../types/payment";
 import { Booking } from "../structures/Booking";
 import { Terminal } from "../structures/Terminal";
 import { BookingDay } from "../structures/BookingDay";
@@ -105,17 +106,21 @@ export const getHistory = async (token: string, hostId: number): Promise<Array<H
 };
 
 export const getHistoryEvent = async (token: string, hostId: number, eventId: number): Promise<HistoryEvent> => {
-    const rawHistory = await manager.get<rawHistoryGet>(HOST_HISTORY_SPECIFIC(hostId, eventId), { Authorization: `Bearer ${token}` });
+    const rawHistory = await manager.get<Array<rawHistoryGet>>(HOST_HISTORY_GLOBAL(hostId), { Authorization: `Bearer ${token}` });
+    const event = rawHistory.find(history => history.id === eventId);
+    
+    if (!event) throw Error("Event not found");
+
     return new HistoryEvent(
-        rawHistory.id,
-        new Date(rawHistory.date),
-        rawHistory.detail,
-        (rawHistory.credit ?? 0) - (rawHistory.debit ?? 0)
+        event.id,
+        new Date(event.date),
+        event.detail,
+        (event.credit ?? 0) - (event.debit ?? 0)
     );
 };
 
 export const getLastPayment = async (token: string, hostId: number): Promise<Payment> => {
-    const rawPayment = await manager.get<rawPaymentResult>(HOST_PAYMENTS_LATEST(hostId), { Authorization: `Bearer ${token}` });
+    const rawPayment = (await manager.get<rawHostHomeResult>(HOST_HOME(hostId), { Authorization: `Bearer ${token}` })).latestPaiement;
     return new Payment(
         rawPayment.id,
         hostId,
