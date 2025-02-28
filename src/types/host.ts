@@ -1,4 +1,5 @@
 import { rawEstablishmentResult } from "./establishment";
+import { rawPaymentResult } from "./payment";
 import { rawTerminalResult } from "./terminal";
 
 export interface rawHostResult {
@@ -146,4 +147,10 @@ export interface rawBookResult {
     dayOfWeek: number;
     msg: string;
     id: string;
+}
+
+export interface rawHostHomeResult {
+    latestPaiement: rawPaymentResult;
+    historiques: Array<rawHistoryGet>;
+    comptesHote: Array<rawHostBalanceResult>;
 }

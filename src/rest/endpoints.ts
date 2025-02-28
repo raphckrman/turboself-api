@@ -11,6 +11,7 @@ export const USER_BY_HOTE = (hostId: number) => `v1/utilisateurs/hotes/${hostId}
 
 export const HOST = (hostId: number) => `v1/hotes/${hostId}`;
 export const HOST_BALANCE = (hostId: number) => `v1/comptes/hotes/${hostId}/3`;
+export const HOST_HOME = (hostId: number) => `v2/hotes/${hostId}/accueil`;
 export const HOST_ACCOUNTS = (hostId: number) => `v2/hotes/${hostId}/comptes`;
 export const HOST_SIBLINGS = (hostId: number) => `v1/hotes/${hostId}/freres-soeurs`;
 export const HOST_BOOK_EVENING = (hostId: number) => `v1/hotes/${hostId}/resa-soir`;

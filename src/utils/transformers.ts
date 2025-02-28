@@ -58,7 +58,7 @@ export function transformToEstablishment(establishment: rawEstablishmentResult |
             qrCodeStudent:                   establishment.configuration?.autoriseQrCodeEleve || null,
             qrCodeCommensal:                 establishment.configuration?.autoriseQrCodeCommensal || null,
             qrCodeTrainee:                   establishment.configuration?.autoriseQrCodeStagiaire || null,
-            hideHistory:                     establishment.configuration?.cacherHistorique || null
+            hideHistory:                     establishment.configuration?.cacherHistorique || false
         }) : {
             maxReservationsStudentMoney:     null,
             maxReservationsStudentPackage:   null,
