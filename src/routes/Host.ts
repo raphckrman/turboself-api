@@ -5,10 +5,8 @@ import {
     HOST_BOOK_EVENING,
     HOST_BOOK_MEAL,
     HOST_HISTORY_GLOBAL,
-    HOST_HISTORY_SPECIFIC,
     HOST_HOME,
     HOST_INIT_PAYMENT,
-    HOST_PAYMENTS_LATEST,
     HOST_RESERVATIONS,
     HOST_SIBLINGS
 } from "../rest/endpoints";
@@ -108,8 +106,8 @@ export const getHistory = async (token: string, hostId: number): Promise<Array<H
 export const getHistoryEvent = async (token: string, hostId: number, eventId: number): Promise<HistoryEvent> => {
     const rawHistory = await manager.get<Array<rawHistoryGet>>(HOST_HISTORY_GLOBAL(hostId), { Authorization: `Bearer ${token}` });
     const event = rawHistory.find(history => history.id === eventId);
-    
-    if (!event) throw Error("Event not found");
+
+    if (!event) throw new Error("Event not found");
 
     return new HistoryEvent(
         event.id,
