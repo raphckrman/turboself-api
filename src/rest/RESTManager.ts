@@ -32,7 +32,7 @@ export class RestManager {
       headers: {
         "Content-Type": "application/json",
         ...headers,
-        "User-Agent": "@raphckrman/turboself-api"
+        "User-Agent": "MyTurboself/86 CFNetwork/3890.100.1 Darwin/27.0.0"
       }
     });
 
