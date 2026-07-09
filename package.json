@@ -2,7 +2,10 @@
   "name": "turboself-api",
   "version": "2.2.0",
   "description": "A wrapper around Turboself internal API.",
-  "repository": "github:raphckrman/turboself-api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raphckrman/turboself-api.git"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
